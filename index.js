@@ -10,12 +10,12 @@ let app = express();
 const pg = require("pg");
 const Pool = pg.Pool;
 
-//const connectionString = process.env.DATABASE_URL || 'postgresql://codex:codex123@localhost:5432/greetings';
+const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/reg_numbers';
 
 const pool = new Pool({
      connectionString
 });
-const reg = regFactory(pool);
+const regFact = regFactory(pool);
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -35,17 +35,29 @@ app.use(bodyParser.json())
 
 app.get('/', async function (req, res) {
 
-});
-
-app.post('/greet', async function (req, res) {
-
-
      res.render('index', );
 });
 
-app.get('/greeted', async function (req, res) {
+app.post('/reg_number', async function (req, res) {
+/*const plate = req.body.plateNum;
+const plate2 = req.body.plateNumber;
 
-     res.render('greeted', );
+const add = await regFact.addButton(plate2);
+const plateDisplay = await regFact.location(plate);
+*/
+
+const addReg = await regFact.addReg();
+const getReg = await regFact.getReg();
+
+     res.render('index', {
+          display: getReg,
+     });
+});
+
+app.get('/reg_number', async function (req, res) {
+
+     
+     res.render('', );
 });
 
 app.get('/counter/:nameItem', async function (req, res) {
@@ -55,6 +67,7 @@ app.get('/counter/:nameItem', async function (req, res) {
 });
 
 app.post("/reset", async function (req, res) {
+
 
      res.redirect("/");
 })
