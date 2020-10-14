@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/registration_number.css">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="example">CA 135-506</div>
+
+    <div>
+        <label for="Header">Registration number</label>
+         <input type="text" name="textNumItem"  placeholder="enter registration number" class="regTextElem">
+         <button class="addBtn" type="button" name="addbutton" >Add</button>
+    </div>
+
+    <div class = "regDiv">
+    <ul class="regPlates"><li>CA 135-506</li></ul>
+     </div>
+
+    <div class="error"></div>
+    
+    
+      <select id="dropDown">
+        <option value="All" selected="selected">Show All</option>
+        <option value="CA">Cape Town</option>
+        <option value="CY">Bellville</option>
+        <option value="CL">Stellenbosch</option>
+      </select>
+    
+      <div>
+        <button class="resetBtn" type="button" name="resetbutton" >Reset</button>
+      </div>
+      
+</body>
+<script src="factory/registration_number.factory.js"></script>
+<script src="registration_number.js" charset="utf-8"></script>
+</html>
+</form>
