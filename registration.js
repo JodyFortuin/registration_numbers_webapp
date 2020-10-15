@@ -17,7 +17,7 @@ module.exports = function regFactory(pool) {
         async function addReg(params){
 
           const INSERT_QUERY = 'insert into regnumbers(reg, town_id) values ($1, $2)';
-          await pool.query(INSERT_QUERY, [params, params]);
+          await pool.query(INSERT_QUERY, [params.reg,params.town_id]);
         }
 
         async function getReg(){

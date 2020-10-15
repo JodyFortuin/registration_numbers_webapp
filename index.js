@@ -45,8 +45,8 @@ const plate2 = req.body.plateNumber;
 const add = await regFact.addButton(plate2);
 const plateDisplay = await regFact.location(plate);
 */
-
-const addReg = await regFact.addReg();
+const params = req.body.params;
+const addReg = await regFact.addReg(params);
 const getReg = await regFact.getReg();
 
      res.render('index', {
