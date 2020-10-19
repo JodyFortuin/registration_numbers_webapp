@@ -7,11 +7,12 @@ const regFactory = require('./registration');
 
 let app = express();
 
-const pg = require("pg");
-const Pool = pg.Pool;
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://codex:pg123@localhost:5432/reg_numbers';
 
+const pg = require("pg");
+
+const Pool = pg.Pool;
 const pool = new Pool({
      connectionString
 });
@@ -45,8 +46,11 @@ const plate2 = req.body.plateNumber;
 const add = await regFact.addButton(plate2);
 const plateDisplay = await regFact.location(plate);
 */
-const params = req.body.params;
+const params = req.body.textNumItem;
+console.log(params)
+if(params){
 const addReg = await regFact.addReg(params);
+}
 const getReg = await regFact.getReg();
 
      res.render('index', {
@@ -67,7 +71,7 @@ app.get('/counter/:nameItem', async function (req, res) {
 });
 
 app.post("/reset", async function (req, res) {
-
+     await regFact.resetBtn();
 
      res.redirect("/");
 })

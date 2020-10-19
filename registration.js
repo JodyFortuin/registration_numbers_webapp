@@ -17,13 +17,32 @@ module.exports = function regFactory(pool) {
         async function addReg(params){
 
           const INSERT_QUERY = 'insert into regnumbers(reg, town_id) values ($1, $2)';
-          await pool.query(INSERT_QUERY, [params.reg,params.town_id]);
+          const INSERT_TOWNS = 'insert into towns(town_name, loc) values ($1, $2)';
+          await pool.query(INSERT_QUERY, [params, params.town_id]);
+
+          const q = 'SELECT id FROM towns INNER JOIN regnumbers ON towns.id = regnumbers.town_id';
+          await pool.query(q);
+          
+          if(params.startsWith("CA")){
+              await pool.query(INSERT_TOWNS, ["Cape Town", "CA"]);
+          } else if (params.startsWith("CY")){
+              await pool.query(INSERT_TOWNS, ["Bellville", "CY"]);
+          } else if(params.startsWith("CL")){
+              await pool.query(INSERT_TOWNS, ["Stellenbosch", "CL"]);
+          }
         }
 
         async function getReg(){
 
           const regs = await pool.query('select reg, town_id from regnumbers');
           return regs.rows;
+        }
+
+        async function resetBtn(){
+          const DELETE_QUERY = 'delete from regnumbers';
+          const DELETE_TOWNS = 'delete from towns';
+          await pool.query(DELETE_QUERY);
+          await pool.query(DELETE_TOWNS);
         }
 
         function location(plateNum) {
@@ -71,5 +90,6 @@ module.exports = function regFactory(pool) {
           addReg,
           getReg,
           allRegs,
+          resetBtn
         };
       }
