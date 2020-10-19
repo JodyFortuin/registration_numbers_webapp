@@ -53,6 +53,11 @@ const addReg = await regFact.addReg(params);
 }
 const getReg = await regFact.getReg();
 
+const error = await regFact.error(req.body.textNumItem);
+if (error) {
+     req.flash('info', 'No Registration number entered');
+}
+
      res.render('index', {
           display: getReg,
      });

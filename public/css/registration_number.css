@@ -16,3 +16,8 @@ li {
     text-align: center;
     display:inline-block;
 }
+
+.entry{
+    color:red;
+    font-size: 10px;
+    }
