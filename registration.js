@@ -19,7 +19,7 @@ module.exports = function regFactory(pool) {
           const INSERT_QUERY = 'insert into regnumbers(reg, town_id) values ($1, $2)';
           const INSERT_TOWNS = 'insert into towns(town_name, loc) values ($1, $2)';
           await pool.query(INSERT_QUERY, [params, params.town_id]);
-
+          
           const q = 'SELECT loc FROM towns INNER JOIN regnumbers ON towns.id = regnumbers.town_id';
           await pool.query(q);
 
