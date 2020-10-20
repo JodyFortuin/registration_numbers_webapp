@@ -36,7 +36,9 @@ app.use(bodyParser.json())
 
 app.get('/', async function (req, res) {
 
-     res.render('index', );
+     const getReg = await regFact.getReg();
+
+     res.render('index', {display: getReg});
 });
 
 app.post('/reg_number', async function (req, res) {
@@ -47,12 +49,12 @@ const add = await regFact.addButton(plate2);
 const plateDisplay = await regFact.location(plate);
 */
 const params = req.body.textNumItem;
-console.log(params)
+
 if(params){
 const addReg = await regFact.addReg(params);
 }
 const getReg = await regFact.getReg();
-
+console.log(getReg)
 const error = await regFact.error(req.body.textNumItem);
 if (error) {
      req.flash('info', 'No Registration number entered');

@@ -23,16 +23,14 @@ module.exports = function regFactory(pool) {
           const q = 'SELECT loc FROM towns INNER JOIN regnumbers ON towns.id = regnumbers.town_id';
           await pool.query(q);
 
-          if(params.startsWith("CA")){
+          /*if(params.startsWith("CA")){
               await pool.query(INSERT_TOWNS, ["Cape Town", "CA"]);
           } else if (params.startsWith("CY")){
               await pool.query(INSERT_TOWNS, ["Bellville", "CY"]);
           } else if(params.startsWith("CL")){
               await pool.query(INSERT_TOWNS, ["Stellenbosch", "CL"]);
-          }
+          }*/
         }
-        //insert into towns(town_name, loc) values ('Cape Town', 'CY');
-
 
         async function getReg(){
 
@@ -102,3 +100,10 @@ module.exports = function regFactory(pool) {
           error
         };
       }
+
+      
+//insert into towns (id, town_name, loc) values (1, 'Cape Town', 'CA');
+//insert into towns (id, town_name, loc) values (2, 'Bellville', 'CY');
+//insert into towns (id, town_name, loc) values (3, 'Stellenbosch', 'CL');
+
+//alter table regnumbers add foreign key (town_id) references towns(id);
