@@ -53,7 +53,7 @@ module.exports = function regFactory(pool) {
         }
       
         function regex(plateInput) {
-          var plateRegex = /C[AYL] \d{4,6}/;
+          var plateRegex = /C[AYL] \d{4,6}$/;
           if (plateInput !== ""){
             // var sub = plateInput.substring(0, 2);
             var newPlate = plateInput.replace(plateRegex, "");
