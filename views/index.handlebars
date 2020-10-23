@@ -19,13 +19,17 @@
   </div>
 
   <div class="error"></div>
+</form>
 
+<form action="/reg_number" method="GET">
   <select id="dropDown">
-    <option value="All" selected="selected">Show All</option>
-    <option value="CA">Cape Town</option>
-    <option value="CY">Bellville</option>
-    <option value="CL">Stellenbosch</option>
+    <option value='All' selected="selected">Show All</option>
+    <option value='1'>Cape Town</option>
+    <option value='2'>Bellville</option>
+    <option value='3'>Stellenbosch</option>
   </select>
+
+  <button class="filterBtn" type="submit" name="filterButton">Filter</button>
 </form>
 
 <form action="/reset" method="POST">

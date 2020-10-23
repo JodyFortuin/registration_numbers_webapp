@@ -42,16 +42,13 @@ app.get('/', async function (req, res) {
 });
 
 app.post('/reg_number', async function (req, res) {
-/*const plate = req.body.plateNum;
-const plate2 = req.body.plateNumber;
 
-const add = await regFact.addButton(plate2);
-const plateDisplay = await regFact.location(plate);
-*/
 const params = req.body.textNumItem;
 
+const regexPlate = await regFact.regex(params);
+
 if(params){
-const addReg = await regFact.addReg(params);
+const addReg = await regFact.addReg(regexPlate);
 }
 const getReg = await regFact.getReg();
 console.log(getReg)
@@ -69,12 +66,6 @@ app.get('/reg_number', async function (req, res) {
 
      
      res.render('', );
-});
-
-app.get('/counter/:nameItem', async function (req, res) {
-
-
-     res.render('counter', );
 });
 
 app.post("/reset", async function (req, res) {

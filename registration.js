@@ -17,19 +17,15 @@ module.exports = function regFactory(pool) {
         async function addReg(params){
 
           const INSERT_QUERY = 'insert into regnumbers(reg, town_id) values ($1, $2)';
-          const INSERT_TOWNS = 'insert into towns(town_name, loc) values ($1, $2)';
           await pool.query(INSERT_QUERY, [params, params.town_id]);
           
-          const q = 'SELECT loc FROM towns INNER JOIN regnumbers ON towns.id = regnumbers.town_id';
-          await pool.query(q);
-
-          /*if(params.startsWith("CA")){
-              await pool.query(INSERT_TOWNS, ["Cape Town", "CA"]);
-          } else if (params.startsWith("CY")){
-              await pool.query(INSERT_TOWNS, ["Bellville", "CY"]);
-          } else if(params.startsWith("CL")){
-              await pool.query(INSERT_TOWNS, ["Stellenbosch", "CL"]);
+        /*  const idValue = ('select id from towns where value = $1',[]);
+          const INSERT_ID = 'insert into regnumbers(town_id) value($1)'
+          var idIndex = idValue.rows[0].id;
+          if(idValue.rowCount > 0){
+            await pool.query(INSERT_ID, [idIndex]);
           }*/
+          
         }
 
         async function getReg(){
@@ -40,9 +36,7 @@ module.exports = function regFactory(pool) {
 
         async function resetBtn(){
           const DELETE_QUERY = 'delete from regnumbers';
-          const DELETE_TOWNS = 'delete from towns';
           await pool.query(DELETE_QUERY);
-          await pool.query(DELETE_TOWNS);
         }
 
         function error(plateInput){
@@ -58,14 +52,15 @@ module.exports = function regFactory(pool) {
           return regPlate;
         }
       
-        function regNumRegex(plateInput) {
-          var chars = /[^A-Za-z0-9]/g;
-          if (plateInput !== "") {
-            var newPlate = plateInput.replace(chars, "");  
+        function regex(plateInput) {
+          var plateRegex = /C[AYL] \d{4,6}/;
+          if (plateInput !== ""){
+            // var sub = plateInput.substring(0, 2);
+            var newPlate = plateInput.replace(plateRegex, "");
             var upperCase = newPlate.toUpperCase();
             return upperCase;
-            }
-            return "";     
+          }
+           return "";
          }
       
         function filter(loc) {
@@ -90,7 +85,7 @@ module.exports = function regFactory(pool) {
       }
         return {
           regNumFactory,
-          regNumRegex,
+          regex,
           location,
           filter,
           addReg,
