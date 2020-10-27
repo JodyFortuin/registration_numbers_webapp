@@ -1,102 +1,82 @@
 module.exports = function regFactory(pool) {
 
-    function regNumFactory() {
-        var mainRegList = {};
+  async function addReg(params) {
+    var plateRegex = /C[AYL] \d{4,6}$/;
+    // if (plateRegex){
+
+    var sub = params.substring(0, 2);
+    // console.log(sub)
+    
+    console.log(params);
+    const regValue = await pool.query('select * from regnumbers where reg = $1', [params]);
+    const idValue = await pool.query('select id from towns where loc = $1', [sub]);
+    var idIndex = idValue.rows[0].id;
+    //console.log(idIndex.rowCount)
+    if (idIndex.rowCount > 0) {
+      await pool.query("select * from regnumbers where reg = $1", [params]);
+    }
+    
+    if (regValue.rowCount === 0) {
+      const INSERT_QUERY = "insert into regnumbers(reg, town_id) values ($1, $2)";
+      await pool.query(INSERT_QUERY, [params, idIndex]);
+    }
+    // }
+  }
+
+  async function filter(location){
+    if (location = "All"){
+        await pool.query('select reg from regnumbers')
+      }
+       else {
+        await pool.query("select reg from regnumbers where town_id = $1",[location]);
+      }
     }
 
-      /*function addButton(plateNumber){
-          // var regValue = ""
-      
-          if (plateNumber!=="") {
-            mainRegList.push(plateNumber);
-          } else if (plateNumber == ""){
-            errorTextElem.innerHTML = "please enter reg number";
-          }
-        }*/
+  async function getReg() {
+    const regs = await pool.query("select reg, town_id from regnumbers");
+    return regs.rows;
+  }
 
-        async function addReg(params){
+  async function resetBtn() {
+    const DELETE_QUERY = "delete from regnumbers";
+    await pool.query(DELETE_QUERY);
+  }
 
-          const INSERT_QUERY = 'insert into regnumbers(reg, town_id) values ($1, $2)';
-          await pool.query(INSERT_QUERY, [params, params.town_id]);
-          
-        /*  const idValue = ('select id from towns where value = $1',[]);
-          const INSERT_ID = 'insert into regnumbers(town_id) value($1)'
-          var idIndex = idValue.rows[0].id;
-          if(idValue.rowCount > 0){
-            await pool.query(INSERT_ID, [idIndex]);
-          }*/
-          
-        }
+  function error(plateInput) {
+    if (plateInput === "") {
+      return "no reg number";
+    }
+  }
 
-        async function getReg(){
+  function location(plateNum) {
+    if (plateNum !== "") {
+      regPlate = plateNum;
+    }
+    return regPlate;
+  }
 
-          const regs = await pool.query('select reg, town_id from regnumbers');
-          return regs.rows;
-        }
+  function regex(plateInput) {
+    var plateRegex = /C[AYL] \d{4,6}$/;
+    if (plateInput !== "") {
+      var newPlate = plateInput.replace(plateRegex, "");
+      var upperCase = newPlate.toUpperCase();
+      // console.log(plateInput)
+      return upperCase;
+    }
+    return "";
+  }
 
-        async function resetBtn(){
-          const DELETE_QUERY = 'delete from regnumbers';
-          await pool.query(DELETE_QUERY);
-        }
+  return {
+    regex,
+    location,
+    filter,
+    addReg,
+    getReg,
+    resetBtn,
+    error,
+  };
+};
 
-        function error(plateInput){
-          if (plateInput === ""){
-              return "no reg number";
-          }
-        }
-
-        function location(plateNum) {
-          if (plateNum !== "") {
-            regPlate = plateNum;
-          }
-          return regPlate;
-        }
-      
-        function regex(plateInput) {
-          var plateRegex = /C[AYL] \d{4,6}$/;
-          if (plateInput !== ""){
-            // var sub = plateInput.substring(0, 2);
-            var newPlate = plateInput.replace(plateRegex, "");
-            var upperCase = newPlate.toUpperCase();
-            return upperCase;
-          }
-           return "";
-         }
-      
-        function filter(loc) {
-          const filtered = {};
-          for (var i = 0; i < mainRegList.length; i++) {
-            var newReg = mainRegList[i];
-            console.log(newReg)
-            if (newReg.startsWith(loc)) {
-              filtered.push(newReg);
-            }
-          }
-          
-          console.log(newReg)
-          return filtered;
-        }
-      
-        
-      
-      function allRegs(){
-      
-        return mainRegList;
-      }
-        return {
-          regNumFactory,
-          regex,
-          location,
-          filter,
-          addReg,
-          getReg,
-          allRegs,
-          resetBtn,
-          error
-        };
-      }
-
-      
 //insert into towns (id, town_name, loc) values (1, 'Cape Town', 'CA');
 //insert into towns (id, town_name, loc) values (2, 'Bellville', 'CY');
 //insert into towns (id, town_name, loc) values (3, 'Stellenbosch', 'CL');

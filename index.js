@@ -45,17 +45,18 @@ app.post('/reg_number', async function (req, res) {
 
 const params = req.body.textNumItem;
 
+
 const regexPlate = await regFact.regex(params);
 
-if(params){
+// if(params){
 const addReg = await regFact.addReg(regexPlate);
-}
+// }
 const getReg = await regFact.getReg();
-console.log(getReg)
-const error = await regFact.error(req.body.textNumItem);
-if (error) {
-     req.flash('info', 'No Registration number entered');
-}
+// console.log(getReg)
+// const error = await regFact.error(req.body.textNumItem);
+// if (error) {
+//      req.flash('info', 'No Registration number entered');
+// }
 
      res.render('index', {
           display: getReg,
@@ -63,9 +64,12 @@ if (error) {
 });
 
 app.get('/reg_number', async function (req, res) {
+const dropDown = req.query.dropDown;
+console.log(dropDown);
 
+const filter = regFact.filter(dropDown);
      
-     res.render('', );
+     res.render('index', {display2: filter});
 });
 
 app.post("/reset", async function (req, res) {

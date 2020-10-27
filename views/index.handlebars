@@ -22,7 +22,12 @@
 </form>
 
 <form action="/reg_number" method="GET">
-  <select id="dropDown">
+<div class="regDiv2">
+    <ul class="regPlates2">{{#each display2}}
+      <li>{{this.reg}}</li>
+      {{/each}}</ul>
+  </div>
+  <select id="dropDown" name="dropDown">
     <option value='All' selected="selected">Show All</option>
     <option value='1'>Cape Town</option>
     <option value='2'>Bellville</option>
