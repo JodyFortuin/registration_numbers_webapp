@@ -38,25 +38,28 @@ app.get('/', async function (req, res) {
 
      const getReg = await regFact.getReg();
 
-     res.render('index', {display: getReg});
+     res.render('index', 
+     // {display: getReg}
+     
+     );
 });
 
 app.post('/reg_number', async function (req, res) {
 
 const params = req.body.textNumItem;
 
+ const regexPlate = await regFact.regex(params);
 
-const regexPlate = await regFact.regex(params);
-
-// if(params){
+if(params){
 const addReg = await regFact.addReg(regexPlate);
-// }
+}
+
 const getReg = await regFact.getReg();
 // console.log(getReg)
-// const error = await regFact.error(req.body.textNumItem);
-// if (error) {
-//      req.flash('info', 'No Registration number entered');
-// }
+ const error = await regFact.error(params);
+ if (error) {
+      req.flash('info', 'No Registration number entered');
+ }
 
      res.render('index', {
           display: getReg,
@@ -67,9 +70,11 @@ app.get('/reg_number', async function (req, res) {
 const dropDown = req.query.dropDown;
 console.log(dropDown);
 
-const filter = regFact.filter(dropDown);
-     
-     res.render('index', {display2: filter});
+const filter = await regFact.filter(dropDown);
+     console.log(filter)
+     res.render('index', {
+           display2: filter
+     });
 });
 
 app.post("/reset", async function (req, res) {

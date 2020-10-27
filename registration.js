@@ -24,12 +24,16 @@ module.exports = function regFactory(pool) {
   }
 
   async function filter(location){
-    if (location = "All"){
-        await pool.query('select reg from regnumbers')
+    if (location === "All"){
+      const all = await pool.query('select reg from regnumbers');
+       return all.rows
       }
-       else {
-        await pool.query("select reg from regnumbers where town_id = $1",[location]);
-      }
+       else 
+       {
+         const filtered = await pool.query("select reg from regnumbers where town_id = $1",[location]);
+          return filtered.rows
+        } 
+   
     }
 
   async function getReg() {
@@ -38,7 +42,7 @@ module.exports = function regFactory(pool) {
   }
 
   async function resetBtn() {
-    const DELETE_QUERY = "delete from regnumbers";
+    const DELETE_QUERY = ("delete from regnumbers");
     await pool.query(DELETE_QUERY);
   }
 
