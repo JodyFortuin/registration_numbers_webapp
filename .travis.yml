@@ -7,7 +7,7 @@ env:
 
 before_script:
   - psql -c 'create database  reg_numbers;' -U postgres
-  - psql -U postgres -d reg_numbers -a -f users.sql
+  - psql -U postgres -d reg_numbers -a -f reg.sql
 
 services:
   - postgresql
