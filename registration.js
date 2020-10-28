@@ -1,9 +1,7 @@
 module.exports = function regFactory(pool) {
 
   async function addReg(params) {
-    var plateRegex = /C[AYL] \d{4,6}$/;
-    // if (plateRegex){
-
+ 
     var sub = params.substring(0, 2);
     // console.log(sub)
     
@@ -15,12 +13,16 @@ module.exports = function regFactory(pool) {
     if (idIndex.rowCount > 0) {
       await pool.query("select * from regnumbers where reg = $1", [params]);
     }
+
+    if (idIndex.rowCount > 0) {
+      await pool.query("select * from regnumbers", [params]);
+    }
     
     if (regValue.rowCount === 0) {
       const INSERT_QUERY = "insert into regnumbers(reg, town_id) values ($1, $2)";
       await pool.query(INSERT_QUERY, [params, idIndex]);
     }
-    // }
+
   }
 
   async function filter(location){
@@ -80,9 +82,3 @@ module.exports = function regFactory(pool) {
     error,
   };
 };
-
-//insert into towns (id, town_name, loc) values (1, 'Cape Town', 'CA');
-//insert into towns (id, town_name, loc) values (2, 'Bellville', 'CY');
-//insert into towns (id, town_name, loc) values (3, 'Stellenbosch', 'CL');
-
-//alter table regnumbers add foreign key (town_id) references towns(id);
