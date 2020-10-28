@@ -6,7 +6,7 @@ env:
   - DATABASE_URL=postgresql://postgres@localhost:5432/reg_numbers
 
 before_script:
-  - psql -c 'create database  reg_numbers;' -U postgres
+  - psql -c 'create database reg_numbers;' -U postgres
   - psql -U postgres -d reg_numbers -a -f reg.sql
 
 services:
