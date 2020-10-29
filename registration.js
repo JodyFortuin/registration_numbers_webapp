@@ -1,10 +1,9 @@
 module.exports = function regFactory(pool) {
 
   async function addReg(params) {
- 
+
     var sub = params.substring(0, 2);
     // console.log(sub)
-    
     console.log(params);
     const regValue = await pool.query('select * from regnumbers where reg = $1', [params]);
     const idValue = await pool.query('select id from towns where loc = $1', [sub]);
@@ -22,7 +21,6 @@ module.exports = function regFactory(pool) {
       const INSERT_QUERY = "insert into regnumbers(reg, town_id) values ($1, $2)";
       await pool.query(INSERT_QUERY, [params, idIndex]);
     }
-
   }
 
   async function filter(location){
@@ -66,7 +64,7 @@ module.exports = function regFactory(pool) {
     if (plateInput !== "") {
       var newPlate = plateInput.replace(plateRegex, "");
       var upperCase = newPlate.toUpperCase();
-      // console.log(plateInput)
+       console.log("=> " + plateInput)
       return upperCase;
     }
     return "";

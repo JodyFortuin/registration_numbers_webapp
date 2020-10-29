@@ -48,10 +48,11 @@ app.post('/reg_number', async function (req, res) {
 
 const params = req.body.textNumItem;
 
- const regexPlate = await regFact.regex(params);
+const regexPlate = await regFact.regex(params);
 
 if(params){
 const addReg = await regFact.addReg(regexPlate);
+//req.flash('info', 'Success');
 }
 
 const getReg = await regFact.getReg();
