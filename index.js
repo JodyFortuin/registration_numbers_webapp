@@ -53,14 +53,14 @@ const regexPlate = await regFact.regex(params);
 if(params){
 const addReg = await regFact.addReg(regexPlate);
 req.flash('info', 'Registration succesfully added!');
-}
+} 
 
 
-const plate = req.body.plateInput;
+/*const plate = req.body.plateInput;
 const valid = await regFact.valid(plate);
 if(valid == false){
      req.flash('info', 'Registration invalid');
-}
+}*/
 
 
 const getReg = await regFact.getReg();
