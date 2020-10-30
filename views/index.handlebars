@@ -12,6 +12,12 @@
   </div>
   {{/if}}
 
+  {{#if messages.success}}
+  <div class="entry2">
+    <h1> {{messages.success}}</h1>
+  </div>
+  {{/if}}
+
   <div class="regDiv">
     <ul class="regPlates">{{#each display}}
       <li>{{this.reg}}</li>
