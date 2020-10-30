@@ -1,4 +1,5 @@
 module.exports = function regFactory(pool) {
+  
   async function addReg(params) {
     if (params !== "") {
     
@@ -9,17 +10,6 @@ module.exports = function regFactory(pool) {
       const idValue = await pool.query("select id from towns where loc = $1", [sub]);
       var idIndex = idValue.rows[0].id;
       
-      /*if (sub !== "") {
-        await pool.query("select id from towns where loc = $1", [sub]);
-       
-      } else {
-        return false;
-      }*/
-      //console.log(idIndex.rowCount)
-      /*if(sub != "CA"){ 
-        return false
-      } else {
-*/
       if (idIndex.rowCount > 0) {
         await pool.query("select * from regnumbers where reg = $1", [params]);
       }
@@ -32,10 +22,7 @@ module.exports = function regFactory(pool) {
         const INSERT_QUERY = "insert into regnumbers(reg, town_id) values ($1, $2)";
         await pool.query(INSERT_QUERY, [params, idIndex]);
       }
-    //}
-    } else {
-      return false;
-    }
+    } 
   }
 
 
