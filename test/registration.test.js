@@ -26,6 +26,19 @@ describe("Registration Database Unit Test", function () {
 
 });
 
+it("should be able to delete all registration numbers from the database", async function () {
+
+  let regFactory = regFact(pool);
+  const DELETE_QUERY = "delete from regnumbers";
+
+  await pool.query(INSERT_QUERY, ["CA111111", 1]);
+  await pool.query(INSERT_QUERY, ["CY222222", 1]);
+  await pool.query(INSERT_QUERY, ["CL333333", 1]);
+  await pool.query(DELETE_QUERY);
+
+  assert.deepEqual([], await regFactory.getReg());
+
+});
 
 it("should be able to display all registration numbers when 'All' is selected", async function () {
 
