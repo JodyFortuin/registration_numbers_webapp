@@ -40,6 +40,18 @@ it("should be able to delete all registration numbers from the database", async 
 
 });
 
+it("should be able to check for duplicates", async function () {
+
+  let regFactory = regFact(pool);
+
+  await pool.query(INSERT_QUERY, ["CA123456", 1]);
+  await pool.query(INSERT_QUERY, ["CA123456", 1]);
+  regFactory.duplicate();
+
+  assert.deepEqual([{"reg": "CA123456", "town_id": 1},{"reg": "CA123456", "town_id": 1}], await regFactory.getReg());
+
+});
+
 it("should be able to display all registration numbers when 'All' is selected", async function () {
 
     let regFactory = regFact(pool);

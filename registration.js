@@ -18,8 +18,7 @@ module.exports = function regFactory(pool) {
       }
 
       if (regValue.rowCount === 0) {
-        const INSERT_QUERY =
-          "insert into regnumbers(reg, town_id) values ($1, $2)";
+        const INSERT_QUERY ="insert into regnumbers(reg, town_id) values ($1, $2)";
         await pool.query(INSERT_QUERY, [params, idIndex]);
       }
     }
