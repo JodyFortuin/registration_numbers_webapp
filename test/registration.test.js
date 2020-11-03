@@ -10,8 +10,6 @@ describe("Registration Database Unit Test", function () {
     connectionString
   });
 
-  const INSERT_QUERY = "insert into regnumbers(reg, town_id) values ($1, $2)";
-
   beforeEach(async function () {
     await pool.query("delete from regnumbers");
   });
@@ -19,22 +17,20 @@ describe("Registration Database Unit Test", function () {
   it("should be able to insert a registration number", async function () {
 
     let regFactory = regFact(pool);
-
-    await pool.query(INSERT_QUERY, ["CA123456", 1]);
-
-    assert.deepEqual([{"reg": "CA123456", "town_id": 1}], await regFactory.getReg());
+    const INSERT_QUERY = await regFactory.addReg("CA 123456", 1);
+ 
+    assert.deepEqual([{"reg": "CA 123456", "town_id": 1}], await regFactory.getReg());
 
 });
 
 it("should be able to delete all registration numbers from the database", async function () {
 
   let regFactory = regFact(pool);
-  const DELETE_QUERY = "delete from regnumbers";
 
-  await pool.query(INSERT_QUERY, ["CA111111", 1]);
-  await pool.query(INSERT_QUERY, ["CY222222", 1]);
-  await pool.query(INSERT_QUERY, ["CL333333", 1]);
-  await pool.query(DELETE_QUERY);
+  const INSERT_QUERY = await regFactory.addReg("CA 123456", 1);
+  const INSERT_QUERY2 = await regFactory.addReg("CY 123456", 2);
+  const INSERT_QUERY3 = await regFactory.addReg("CL 123456", 3);
+  const DELETE_QUERY = await regFactory.resetBtn();
 
   assert.deepEqual([], await regFactory.getReg());
 
@@ -44,11 +40,10 @@ it("should be able to check for duplicates", async function () {
 
   let regFactory = regFact(pool);
 
-  await pool.query(INSERT_QUERY, ["CA123456", 1]);
-  await pool.query(INSERT_QUERY, ["CA123456", 1]);
-  regFactory.duplicate();
+  const INSERT_QUERY = await regFactory.addReg("CA 123456", 1);
+  const INSERT_QUERY2 = await regFactory.addReg("CA 123456", 1);
 
-  assert.deepEqual([{"reg": "CA123456", "town_id": 1},{"reg": "CA123456", "town_id": 1}], await regFactory.getReg());
+  assert.deepEqual(true, await regFactory.duplicate());
 
 });
 
@@ -56,10 +51,10 @@ it("should be able to display all registration numbers when 'All' is selected", 
 
     let regFactory = regFact(pool);
 
-    await pool.query(INSERT_QUERY, ["CA123456", "1"]);
-    await pool.query(INSERT_QUERY, ["CY432432", "2"]);
-    await pool.query(INSERT_QUERY, ["CL542333", "3"]);
-    
+    const INSERT_QUERY = await regFactory.addReg("CA123456", 1);
+    const INSERT_QUERY2 = await regFactory.addReg("CY432432", 2);
+    const INSERT_QUERY3 = await regFactory.addReg("CL542333", 3);
+
     assert.deepEqual([{"reg": "CA123456"},
     {"reg": "CY432432"},
     {"reg": "CL542333"}], await regFactory.filter("All"));
@@ -70,13 +65,13 @@ it("should be able to display all registration numbers for Cape Town when 'Cape 
 
     let regFactory = regFact(pool);
 
-    await pool.query(INSERT_QUERY, ["CA123456", "1"]);
-    await pool.query(INSERT_QUERY, ["CA432432", "1"]);
-    await pool.query(INSERT_QUERY, ["CL542333", "3"]);
-    await pool.query(INSERT_QUERY, ["CY111111", "2"]);
-    await pool.query(INSERT_QUERY, ["CL222222", "3"]);
-    await pool.query(INSERT_QUERY, ["CY463749", "2"]);
-    await pool.query(INSERT_QUERY, ["CL958473", "3"]);
+    const INSERT_QUERY = await regFactory.addReg("CA123456", 1);
+    const INSERT_QUERY2 = await regFactory.addReg("CA432432", 1);
+    const INSERT_QUERY3 = await regFactory.addReg("CL542333", 3);
+    const INSERT_QUERY4 = await regFactory.addReg("CY111111", 2);
+    const INSERT_QUERY5 = await regFactory.addReg("CL222222", 3);
+    const INSERT_QUERY6 = await regFactory.addReg("CY463749", 2);
+    const INSERT_QUERY7 = await regFactory.addReg("CL958473", 3);
     
     assert.deepEqual([{"reg": "CA123456"},
     {"reg": "CA432432"}], await regFactory.filter("1"));
@@ -87,11 +82,11 @@ it("should be able to display all registration numbers for Bellville when 'Bellv
 
     let regFactory = regFact(pool);
 
-    await pool.query(INSERT_QUERY, ["CA123456", "1"]);
-    await pool.query(INSERT_QUERY, ["CY555555", "2"]);
-    await pool.query(INSERT_QUERY, ["CY444444", "2"]);
-    await pool.query(INSERT_QUERY, ["CY432432", "2"]);
-    await pool.query(INSERT_QUERY, ["CL542333", "3"]);
+    const INSERT_QUERY = await regFactory.addReg("CA123456", 1);
+    const INSERT_QUERY2 = await regFactory.addReg("CY555555", 2);
+    const INSERT_QUERY3 = await regFactory.addReg("CY444444", 2);
+    const INSERT_QUERY4 = await regFactory.addReg("CY432432", 2);
+    const INSERT_QUERY5 = await regFactory.addReg("CL542333", 3);
 
     assert.deepEqual([{"reg": "CY555555"},
     {"reg": "CY444444"},
@@ -103,15 +98,15 @@ it("should be able to display all registration numbers for Stellenbosch when 'St
 
     let regFactory = regFact(pool);
 
-    await pool.query(INSERT_QUERY, ["CA123456", "1"]);
-    await pool.query(INSERT_QUERY, ["CY432432", "2"]);
-    await pool.query(INSERT_QUERY, ["CL333333", "3"]);
-    await pool.query(INSERT_QUERY, ["CL333222", "3"]);
-    await pool.query(INSERT_QUERY, ["CL542333", "3"]);
-    await pool.query(INSERT_QUERY, ["CA978767", "1"]);
-    await pool.query(INSERT_QUERY, ["CY858090", "2"]);
-    await pool.query(INSERT_QUERY, ["CY797679", "2"]);
-    
+    const INSERT_QUERY = await regFactory.addReg("CA123456", 1);
+    const INSERT_QUERY2 = await regFactory.addReg("CY432432", 2);
+    const INSERT_QUERY3 = await regFactory.addReg("CL333333", 3);
+    const INSERT_QUERY4 = await regFactory.addReg("CL333222", 3);
+    const INSERT_QUERY5 = await regFactory.addReg("CL542333", 3);
+    const INSERT_QUERY6 = await regFactory.addReg("CA978767", 1);
+    const INSERT_QUERY7 = await regFactory.addReg("CY858090", 2);
+    const INSERT_QUERY8 = await regFactory.addReg("CY797679", 2);
+
     assert.deepEqual([{"reg": "CL333333"},
     {"reg": "CL333222"},
     {"reg": "CL542333"}], await regFactory.filter("3"));
